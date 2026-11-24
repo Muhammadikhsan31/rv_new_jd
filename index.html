@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS GUNUNG SAHARI 150kV - Control Terminal '96</title>
+    <link rel="preload" href="imagess.png" as="image">
+    <style>
+        /* === FONT KLASIK 90-AN & KETERBACAAN TINGGI === */
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=VT323&display=swap');
+
+        :root {
+            /* === LIGHT MODE: KUNING & HITAM (PLN INDUSTRIAL '96) === */
+            --bg-base: #f2e49b;
+            --bg-grid: rgba(18, 18, 18, 0.07);
+            --window-bg: #fff9d6;
+            --surface-alt: #f7e68c;
+            --titlebar-bg: #141414;
+            --titlebar-text: #ffd600;
+            --accent-primary: #ffd600;
+            --accent-strong: #e6b800;
+            --text-main: #121212;
+            --text-muted: #3d3820;
+            --border-dark: #121212;
+            --border-light: #fffef0;
+            --btn-bg: #ffd600;
+            --btn-text: #121212;
+            --btn-active-bg: #121212;
+            --btn-active-text: #ffd600;
+            --lcd-bg: #141414;
+            --lcd-text: #ffd600;
+            --today-bg: #121212;
+            --today-text: #ffd600;
+            --shadow-hard: 4px 4px 0px #121212;
+        }
+
+        [data-theme="dark"] {
+            /* === DARK MODE: UNGU & PUTIH (RETRO NIGHT TERMINAL) === */
+            --bg-base: #150a26;
+            --bg-grid: rgba(255, 255, 255, 0.06);
+            --window-bg: #22113d;
+            --surface-alt: #2f1854;
+            --titlebar-bg: #ffffff;
+            --titlebar-text: #22113d;
+            --accent-primary: #7c3aed;
+            --accent-strong: #9333ea;
+            --text-main: #ffffff;
+            --text-muted: #dcd0f5;
+            --border-dark: #0b0414;
+            --border-light: #b99aff;
+            --btn-bg: #3b1d6e;
+            --btn-text: #ffffff;
+            --btn-active-bg: #ffffff;
+            --btn-active-text: #22113d;
+            --lcd-bg: #0e061a;
+            --lcd-text: #ffffff;
+            --today-bg: #ffffff;
+            --today-text: #22113d;
+            --shadow-hard: 4px 4px 0px #090312;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', Tahoma, sans-serif;
+            background-color: var(--bg-base);
+            background-image: 
+                linear-gradient(to right, var(--bg-grid) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* === BINGKAI KLASIK 90-AN (3D BEVEL) === */
+        .retro-window {
+            background: var(--window-bg);
+            border: 3px solid var(--border-dark);
+            box-shadow: var(--shadow-hard);
+            margin-bottom: 20px;
+        }
+
+        .retro-titlebar {
+            background: var(--titlebar-bg);
+            color: var(--titlebar-text);
+            padding: 7px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border-dark);
+            user-select: none;
+        }
+
+        .win-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .win-box {
+            width: 16px;
+            height: 16px;
+            background: var(--window-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-dark);
+            font-size: 11px;
+            line-height: 13px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* === CONTAINER UTAMA === */
+        .main-wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 18px 18px 85px 18px;
+        }
+
+        /* === HEADER === */
+        .header-body {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-frame {
+            background: #ffd600;
+            border: 2px solid var(--border-dark);
+            padding: 5px;
+            box-shadow: 2px 2px 0 var(--border-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-img {
+            width: 44px;
+            height: auto;
+            display: block;
+        }
+
+        .brand-text h1 {
+            font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            line-height: 1.15;
+            text-transform: uppercase;
+        }
+
+        .brand-subtitle {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 700;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* TOMBOL GANTI TEMA & MENU */
+        .retro-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 2px solid var(--border-dark);
+            box-shadow: 3px 3px 0 var(--border-dark);
+            padding: 10px 14px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .retro-btn:hover {
+            filter: brightness(1.06);
+        }
+
+        .retro-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--border-dark);
+        }
+
+        /* JAM DIGITAL ALA PANEL 90-AN */
+        .lcd-panel {
+            background: var(--lcd-bg);
+            color: var(--lcd-text);
+            border: 2px inset var(--border-light);
+            padding: 8px 14px;
+            text-align: right;
+            min-width: 185px;
+        }
+
+        #digital-clock {
+            font-family: 'VT323', monospace;
+            font-size: 2.1rem;
+            line-height: 0.95;
+            letter-spacing: 2px;
+        }
+
+        #current-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            margin-top: 4px;
+            opacity: 0.92;
+        }
+
+        /* === PANEL PIKET HARI INI (LANGSUNG TERLIHAT TANPA KLIK) === */
+        .today-roster-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 14px 16px;
+        }
+
+        .operator-card {
+            background: var(--surface-alt);
+            border: 2px solid var(--border-dark);
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .op-info {
+            min-width: 0;
+        }
+
+        .op-name {
+            font-weight: 800;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .op-nip {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* === KALENDER & KONTROL POLA SHIFT === */
+        .calendar-body-wrap {
+            padding: 18px;
+        }
+
+        .shift-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .shift-btn {
+            background: var(--surface-alt);
+            color: var(--text-main);
+            border: 2px solid var(--border-dark);
+            box-shadow: 3px 3px 0 var(--border-dark);
+            padding: 11px 10px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .shift-btn.active {
+            background: var(--btn-active-bg);
+            color: var(--btn-active-text);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--border-dark);
+        }
+
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface-alt);
+            border: 2px solid var(--border-dark);
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            gap: 10px;
+        }
+
+        #month-year {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day-name {
+            background: var(--titlebar-bg);
+            color: var(--titlebar-text);
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 9px 4px;
+            text-align: center;
+            border: 2px solid var(--border-dark);
+        }
+
+        .day {
+            background: var(--surface-alt);
+            border: 2px solid var(--border-dark);
+            min-height: 62px;
+            padding: 8px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 800;
+            position: relative;
+            transition: transform 0.1s;
+        }
+
+        .day:hover {
+            background: var(--accent-primary);
+            color: #121212;
+            transform: translate(-2px, -2px);
+            box-shadow: 3px 3px 0 var(--border-dark);
+        }
+
+        [data-theme="dark"] .day:hover {
+            color: #ffffff;
+        }
+
+        .day.today {
+            background: var(--today-bg);
+            color: var(--today-text);
+            box-shadow: inset 0 0 0 2px var(--accent-primary);
+        }
+
+        .day-today-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .day-note-dot {
+            position: absolute;
+            top: 4px;
+            right: 5px;
+            font-size: 0.72rem;
+        }
+
+        .day-empty {
+            background: transparent;
+            border: 1px dashed rgba(128, 128, 128, 0.35);
+            min-height: 62px;
+        }
+
+        /* === BADGE SHIFT & LEGENDA === */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border: 2px solid #121212;
+            color: #ffffff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-align: center;
+            min-width: 48px;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+        }
+
+        .badge-ps { background: #15803d; }
+        .badge-sm { background: #c2410c; }
+        .badge-p  { background: #0369a1; }
+        .badge-s  { background: #b45309; }
+        .badge-m  { background: #4c1d95; }
+        .badge-l  { background: #b91c1c; }
+
+        .legend-container {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 2px dashed var(--border-dark);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        /* === SIDEBAR KANAN + AUTO HIDE 5 DETIK === */
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 990;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+        }
+
+        .sidebar-right {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(340px, 88vw);
+            height: 100vh;
+            background: var(--window-bg);
+            border-left: 4px solid var(--border-dark);
+            box-shadow: -6px 0 0 rgba(0, 0, 0, 0.35);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(0);
+            transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .sidebar-right.closed {
+            transform: translateX(100%);
+        }
+
+        .sidebar-scroll {
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .sidebar-section-title {
+            background: var(--titlebar-bg);
+            color: var(--titlebar-text);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.88rem;
+            font-weight: 700;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            border: 2px solid var(--border-dark);
+        }
+
+        .menu-list {
+            list-style: none;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-list a {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 12px;
+            background: var(--surface-alt);
+            color: var(--text-main);
+            text-decoration: none;
+            border: 2px solid var(--border-dark);
+            box-shadow: 2px 2px 0 var(--border-dark);
+            font-weight: 700;
+            font-size: 0.92rem;
+            transition: transform 0.1s;
+        }
+
+        .menu-list a:hover {
+            background: var(--accent-primary);
+            color: #121212;
+            transform: translate(-2px, -2px);
+        }
+
+        [data-theme="dark"] .menu-list a:hover {
+            color: #ffffff;
+        }
+
+        .menu-nip {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.76rem;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .autohide-bar {
+            background: var(--titlebar-bg);
+            color: var(--titlebar-text);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.76rem;
+            padding: 8px 12px;
+            text-align: center;
+            border-top: 2px solid var(--border-dark);
+        }
+
+        /* TOMBOL FLOATING KANAN BAWAH UNTUK BUKA SIDEBAR */
+        .floating-menu-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 950;
+            background: var(--titlebar-bg);
+            color: var(--titlebar-text);
+            border: 3px solid var(--accent-primary);
+            box-shadow: 4px 4px 0 var(--border-dark);
+            padding: 12px 18px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .floating-menu-btn:active {
+            transform: translate(2px, 2px);
+        }
+
+        /* === MODAL JADWAL === */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            z-index: 1200;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-window {
+            background: var(--window-bg);
+            border: 3px solid var(--border-dark);
+            box-shadow: 6px 6px 0 var(--border-dark);
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-body {
+            padding: 18px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+
+        .schedule-table th, .schedule-table td {
+            border: 2px solid var(--border-dark);
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .schedule-table th {
+            background: var(--surface-alt);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.88rem;
+        }
+
+        .schedule-table td:last-child, .schedule-table th:last-child {
+            text-align: center;
+            width: 95px;
+        }
+
+        .agenda-box {
+            width: 100%;
+            height: 85px;
+            background: var(--surface-alt);
+            color: var(--text-main);
+            border: 2px solid var(--border-dark);
+            padding: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-top: 6px;
+        }
+
+        /* === STATUS BAR BAWAH === */
+        .status-footer {
+            background: var(--window-bg);
+            border: 2px solid var(--border-dark);
+            padding: 10px 14px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* === RESPONSIVE MOBILE & TABLET === */
+        @media (max-width: 900px) {
+            .today-roster-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-wrapper {
+                padding: 12px 10px 80px 10px;
+            }
+            .header-body {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 14px;
+            }
+            .header-controls {
+                justify-content: space-between;
+            }
+            .lcd-panel {
+                flex: 1;
+                min-width: 140px;
+            }
+            .today-roster-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .shift-selector {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .calendar-grid {
+                gap: 4px;
+            }
+            .day-name {
+                font-size: 0.75rem;
+                padding: 7px 2px;
+            }
+            .day, .day-empty {
+                min-height: 50px;
+                font-size: 1rem;
+                padding: 4px 2px;
+            }
+            .day-today-tag {
+                font-size: 0.55rem;
+            }
+            .badge {
+                font-size: 0.78rem;
+                padding: 4px 7px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <!-- BACKDROP & SIDEBAR KANAN (AUTO-HIDE 5 DETIK TANPA KLIK) -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar-right" id="sidebar">
+        <div class="retro-titlebar">
+            <span>MENU & KONTAK.EXE</span>
+            <button onclick="closeSidebar()" style="background: var(--window-bg); color: var(--text-main); border: 1px solid var(--border-dark); padding: 1px 7px; font-weight: bold; cursor: pointer;">✕</button>
+        </div>
+
+        <div class="sidebar-scroll">
+            <div class="sidebar-section-title">⚡ PORTAL OPERASIONAL</div>
+            <ul class="menu-list">
+                <li><a href="http://10.3.187.6/apdjakarta/login" target="_blank">🌐 Portal PLN APD</a></li>
+                <li><a href="https://super-i-app.plnes.co.id/login" target="_blank">⚡ Super-i App</a></li>
+                <li><a href="https://docs.google.com/spreadsheets/d/1nWk4b3st2SFbPBniYTHnva9Ujo11pCMlqXkFOXOi_YU/edit?usp=sharing" target="_blank">📅 Jadwal OPGI 20kV</a></li>
+                <li><a href="https://docs.google.com/spreadsheets/d/1piskUPZdFL5z_jAaxTdcYsEz4aEqB9xRZgDkWyB_fcA/edit?usp=sharing" target="_blank">📝 Log Sheet 1</a></li>
+                <li><a href="https://docs.google.com/spreadsheets/d/1m86LL-PKwcL3QR0VPYbzDQdTanEJ-dJPAcRjGK67RAs/edit?usp=sharing" target="_blank">📝 Log Sheet 2</a></li>
+                <li><a href="https://docs.google.com/spreadsheets/d/1FkLa1sc0zge2yqTYWOepxzLhl8bjQCx1/edit?usp=sharing&ouid=117400822074928604310&rtpof=true&sd=true" target="_blank">📄 Berita Acara (BA)</a></li>
+            </ul>
+
+            <div class="sidebar-section-title">📞 KONTAK WA REGU & PIKET</div>
+            <ul class="menu-list">
+                <li>
+                    <a href="https://wa.me/62816844801?text=assalamualaikum,%20permisi%20Cang" target="_blank">
+                        <span>📞 Piket 20kV</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/6281389500637?text=assalamualaikum,%20permisi%20Cang" target="_blank">
+                        <span>📞 Piket 150kV</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/6289655808261?text=assalamualaikum,%20permisi%20Cang%20Aris" target="_blank">
+                        <span>👤 Cang Aris Setiawan</span>
+                        <span class="menu-nip">NIP: 8118098JKT</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/6287787301417?text=assalamualaikum,%20permisi%20Cang%20Syarif" target="_blank">
+                        <span>👤 Cang Syarif Hidayat</span>
+                        <span class="menu-nip">NIP: 9918036JKT</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/6287832215914?text=assalamualaikum,%20permisi%20Cang%20Suwarto" target="_blank">
+                        <span>👤 Cang Suwarto</span>
+                        <span class="menu-nip">NIP: 14496JKT</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/6285717733041?text=assalamualaikum,%20permisi%20Cang%20Ikhsan" target="_blank">
+                        <span>👤 Cang Muhammad Ikhsan S</span>
+                        <span class="menu-nip">NIP: 0226070JKT</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="autohide-bar" id="autohide-status">
+            ⏱ Auto-hide aktif: menutup dalam 5 dtk tanpa klik
+        </div>
+    </aside>
+
+    <!-- TOMBOL FLOATING KANAN BAWAH -->
+    <button class="floating-menu-btn" onclick="openSidebar()">
+        <span>☰ MENU & WA</span>
+    </button>
+
+    <!-- KONTEN UTAMA -->
+    <div class="main-wrapper">
+        <!-- HEADER WORKSTATION -->
+        <header class="retro-window">
+            <div class="retro-titlebar">
+                <span>C:\PLN\GIS_GUNUNG_SAHARI_150KV\JADWAL_SHIFT.EXE</span>
+                <div class="win-controls">
+                    <span class="win-box">_</span>
+                    <span class="win-box">□</span>
+                    <span class="win-box">×</span>
+                </div>
+            </div>
+            <div class="header-body">
+                <div class="brand-area">
+                    <div class="logo-frame">
+                        <!-- Menggunakan imagess.png dengan cadangan otomatis jika file gambar belum di-load -->
+                        <img src="imagess.png" alt="Logo PLN" class="logo-img"
+                             onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 160%22><rect width=%22120%22 height=%22160%22 fill=%22%23ffd600%22 stroke=%22%23121212%22 stroke-width=%226%22/><path d=%22M8 58 Q25 46 42 58 T76 58 T112 58 M8 82 Q25 70 42 82 T76 82 T112 82 M8 106 Q25 94 42 106 T76 106 T112 106%22 fill=%22none%22 stroke=%22%231e3a8a%22 stroke-width=%2210%22/><polygon points=%2254,14 76,14 52,68 94,62 56,146 66,84 26,90%22 fill=%22%23dc2626%22/></svg>';">
+                    </div>
+                    <div class="brand-text">
+                        <h1>GIS GUNUNG SAHARI 150kV</h1>
+                        <div class="brand-subtitle">TERMINAL JADWAL OPERATOR REGU • SISTEM 90s</div>
+                    </div>
+                </div>
+
+                <div class="header-controls">
+                    <button class="retro-btn" onclick="toggleTheme()" id="theme-btn">
+                        🌙 Mode Malam (Ungu)
+                    </button>
+                    <button class="retro-btn" onclick="openSidebar()">
+                        ☰ Menu Kanan
+                    </button>
+                    <div class="lcd-panel">
+                        <div id="digital-clock">00:00:00</div>
+                        <div id="current-date">Memuat tanggal...</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PANEL STATUS REGU HARI INI -->
+        <section class="retro-window">
+            <div class="retro-titlebar">
+                <span id="today-roster-title">STATUS DINAS HARI INI</span>
+                <span>4 PERSONEL AKTIF</span>
+            </div>
+            <div class="today-roster-grid" id="today-roster-grid">
+                <!-- Diisi otomatis oleh JavaScript -->
+            </div>
+        </section>
+
+        <!-- KALENDER INTERAKTIF -->
+        <section class="retro-window">
+            <div class="retro-titlebar">
+                <span>KALENDER ROTASI SHIFT OPERATOR (KLIK TANGGAL UNTUK DETAIL & LOG)</span>
+                <span id="active-pattern-label">POLA: 8 JAM</span>
+            </div>
+
+            <div class="calendar-body-wrap">
+                <!-- DEFAULT POLA 8 JAM -->
+                <div class="shift-selector">
+                    <button class="shift-btn active" id="btn-8" onclick="setShiftType('8')">Pola 8 Jam (Default)</button>
+                    <button class="shift-btn" id="btn-8-18" onclick="setShiftType('8-18')">Pola 8-18 Jam</button>
+                    <button class="shift-btn" id="btn-24" onclick="setShiftType('24')">Pola 24 Jam</button>
+                </div>
+
+                <div class="calendar-nav">
+                    <button class="retro-btn" onclick="changeMonth(-1)">◀ MUNDUR</button>
+                    <span id="month-year">BULAN TAHUN</span>
+                    <button class="retro-btn" onclick="changeMonth(1)">MAJU ▶</button>
+                </div>
+
+                <div class="calendar-grid" id="calendar-body">
+                    <!-- Diisi otomatis oleh JavaScript -->
+                </div>
+
+                <div class="legend-container">
+                    <span class="badge badge-p">P : Pagi</span>
+                    <span class="badge badge-s">S : Siang</span>
+                    <span class="badge badge-m">M : Malam</span>
+                    <span class="badge badge-l">L : Libur</span>
+                    <span class="badge badge-ps">P&S : Pagi & Sore</span>
+                    <span class="badge badge-sm">S&M : Sore & Malam</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATUS FOOTER -->
+        <footer class="status-footer">
+            <span>STATUS: ONLINE • GIS GUNUNG SAHARI 150kV</span>
+            <span>&copy; <span id="footer-year"></span> REGU OPERATOR — EDISI KLASIK '96</span>
+        </footer>
+    </div>
+
+    <!-- MODAL POP-UP DETAIL TANGGAL -->
+    <div class="modal-overlay" id="schedule-modal">
+        <div class="modal-window">
+            <div class="retro-titlebar">
+                <span id="modal-date-title">DETAIL JADWAL</span>
+                <button onclick="closeModal()" style="background: var(--window-bg); color: var(--text-main); border: 1px solid var(--border-dark); padding: 1px 8px; font-weight: bold; cursor: pointer;">✕</button>
+            </div>
+            <div class="modal-body">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Operator & NIP</th>
+                            <th>Shift</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-schedule-body">
+                        <!-- Data JS -->
+                    </tbody>
+                </table>
+
+                <label for="agenda-input" style="font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 0.88rem;">
+                    📝 LOG / CATATAN HARIAN GARDU:
+                </label>
+                <textarea id="agenda-input" class="agenda-box" placeholder="Tulis catatan operasional, tukar jaga, atau manuver di sini..."></textarea>
+                
+                <div style="display: flex; gap: 10px; margin-top: 14px;">
+                    <button class="retro-btn" onclick="saveAgenda()" style="flex: 1;">💾 SIMPAN CATATAN</button>
+                    <button class="retro-btn" onclick="closeModal()" style="background: var(--surface-alt); color: var(--text-main);">TUTUP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === 1. DATA OPERATOR & NIP ===
+        const operators = [
+            { key: 'aris',    name: 'Cang Aris Setiawan',     nip: '8118098JKT' },
+            { key: 'syarif',  name: 'Cang Syarif Hidayat',    nip: '9918036JKT' },
+            { key: 'suwarto', name: 'Cang Suwarto',           nip: '14496JKT'   },
+            { key: 'ikhsan',  name: 'Cang Muhammad Ikhsan S', nip: '0226070JKT' }
+        ];
+
+        // === 2. GANTI TEMA LIGHT (KUNING-HITAM) & DARK (UNGU-PUTIH) ===
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('theme-btn');
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                btn.innerHTML = '☀️ Mode Siang (Kuning)';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                btn.innerHTML = '🌙 Mode Malam (Ungu)';
+            }
+        }
+
+        // === 3. SIDEBAR KANAN + AUTO-HIDE 5 DETIK TANPA KLIK ===
+        let sidebarTimer = null;
+
+        function resetSidebarAutoHide() {
+            clearTimeout(sidebarTimer);
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.classList.contains('closed')) {
+                sidebarTimer = setTimeout(() => {
+                    closeSidebar();
+                }, 5000); // 5 detik tidak diklik -> otomatis sembunyi
+            }
+        }
+
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebar.classList.remove('closed');
+            if (window.innerWidth <= 900) {
+                backdrop.classList.add('show');
+            }
+            resetSidebarAutoHide();
+        }
+
+        function closeSidebar() {
+            clearTimeout(sidebarTimer);
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebar.classList.add('closed');
+            backdrop.classList.remove('show');
+        }
+
+        // Setiap kali ada klik di dalam sidebar, reset hitungan 5 detik
+        document.getElementById('sidebar').addEventListener('click', () => {
+            resetSidebarAutoHide();
+        });
+
+        // Mulai timer 5 detik saat halaman pertama kali dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            resetSidebarAutoHide();
+        });
+
+        // === 4. JAM DIGITAL & TANGGAL REAL-TIME ===
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('digital-clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', {
+                weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+            });
+            document.getElementById('footer-year').textContent = now.getFullYear();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // === 5. LOGIKA ROTASI JADWAL SHIFT (DEFAULT: 8 JAM) ===
+        const baseDate = new Date(2026, 7, 1); // 1 Agustus 2026
+        let currentShiftType = '8'; // Default 8 Jam
+
+        const pola8 = {
+            aris:    ['M', 'M', 'L', 'L', 'P', 'P', 'S', 'S'],
+            suwarto: ['L', 'L', 'P', 'P', 'S', 'S', 'M', 'M'],
+            ikhsan:  ['P', 'P', 'S', 'S', 'M', 'M', 'L', 'L'],
+            syarif:  ['S', 'S', 'M', 'M', 'L', 'L', 'P', 'P']
+        };
+
+        const pola8_18 = {
+            aris:    ['M', 'M', 'L', 'L', 'P&S', 'L', 'S&M', 'L'],
+            suwarto: ['L', 'L', 'P', 'P', 'L', 'P&S', 'L', 'S&M'],
+            ikhsan:  ['P&S', 'L', 'S&M', 'L', 'M', 'M', 'L', 'L'],
+            syarif:  ['L', 'P&S', 'L', 'S&M', 'L', 'L', 'P', 'P']
+        };
+
+        const pola24 = {
+            aris:    ['L', 'L', 'P', 'L'],
+            suwarto: ['L', 'P', 'L', 'L'],
+            ikhsan:  ['P', 'L', 'L', 'L'],
+            syarif:  ['L', 'L', 'L', 'P']
+        };
+
+        function getBadgeClass(shift) {
+            if (shift === 'P&S') return 'badge-ps';
+            if (shift === 'S&M') return 'badge-sm';
+            if (shift === 'P') return 'badge-p';
+            if (shift === 'S') return 'badge-s';
+            if (shift === 'M') return 'badge-m';
+            return 'badge-l';
+        }
+
+        function hitungShift(year, month, day) {
+            const targetDate = new Date(year, month, day, 12, 0, 0);
+            const diffTime = targetDate - baseDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            const pola = currentShiftType === '8' ? pola8 : (currentShiftType === '8-18' ? pola8_18 : pola24);
+            const cycleLength = currentShiftType === '24' ? 4 : 8;
+
+            let index = diffDays % cycleLength;
+            if (index < 0) index += cycleLength;
+
+            return {
+                aris: pola.aris[index],
+                suwarto: pola.suwarto[index],
+                ikhsan: pola.ikhsan[index],
+                syarif: pola.syarif[index]
+            };
+        }
+
+        function setShiftType(type) {
+            currentShiftType = type;
+            document.querySelectorAll('.shift-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${type}`).classList.add('active');
+
+            const labelMap = { '8': 'POLA: 8 JAM', '8-18': 'POLA: 8-18 JAM', '24': 'POLA: 24 JAM' };
+            document.getElementById('active-pattern-label').textContent = labelMap[type];
+
+            renderTodayRoster();
+            renderCalendar();
+        }
+
+        // === 6. RENDER PANEL STATUS DINAS HARI INI ===
+        function renderTodayRoster() {
+            const today = new Date();
+            const shiftToday = hitungShift(today.getFullYear(), today.getMonth(), today.getDate());
+            const container = document.getElementById('today-roster-grid');
+
+            document.getElementById('today-roster-title').textContent =
+                `STATUS DINAS HARI INI (${today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()})`;
+
+            container.innerHTML = operators.map(op => {
+                const kode = shiftToday[op.key];
+                return `
+                    <div class="operator-card">
+                        <div class="op-info">
+                            <div class="op-name">${op.name}</div>
+                            <div class="op-nip">NIP: ${op.nip}</div>
+                        </div>
+                        <span class="badge ${getBadgeClass(kode)}">${kode}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // === 7. RENDER KALENDER ===
+        let currentDate = new Date();
+        let selectedDateKey = "";
+
+        function renderCalendar() {
+            const monthYear = document.getElementById("month-year");
+            const calendarBody = document.getElementById("calendar-body");
+            calendarBody.innerHTML = "";
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const months = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            monthYear.textContent = `${months[month]} ${year}`;
+
+            const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+            days.forEach(day => {
+                const div = document.createElement("div");
+                div.className = "day-name";
+                div.textContent = day;
+                calendarBody.appendChild(div);
+            });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement("div");
+                emptyDiv.className = "day-empty";
+                calendarBody.appendChild(emptyDiv);
+            }
+
+            const today = new Date();
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayDiv = document.createElement("div");
+                dayDiv.className = "day";
+
+                const isToday = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+                if (isToday) {
+                    dayDiv.classList.add("today");
+                }
+
+                const noteKey = `agenda_${year}_${month}_${i}`;
+                const hasNote = localStorage.getItem(noteKey);
+
+                dayDiv.innerHTML = `
+                    ${hasNote ? '<span class="day-note-dot" title="Ada catatan">💾</span>' : ''}
+                    <span>${i}</span>
+                    ${isToday ? '<span class="day-today-tag">HARI INI</span>' : ''}
+                `;
+
+                dayDiv.onclick = () => openModal(year, month, i);
+                calendarBody.appendChild(dayDiv);
+            }
+        }
+
+        function changeMonth(step) {
+            currentDate.setMonth(currentDate.getMonth() + step);
+            renderCalendar();
+        }
+
+        // === 8. MODAL JADWAL & CATATAN HARIAN ===
+        function openModal(year, month, day) {
+            const months = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            document.getElementById("modal-date-title").textContent = `JADWAL: ${day} ${months[month].toUpperCase()} ${year}`;
+
+            const shiftHariIni = hitungShift(year, month, day);
+            const tbody = document.getElementById("modal-schedule-body");
+
+            tbody.innerHTML = operators.map(op => {
+                const kode = shiftHariIni[op.key];
+                return `
+                    <tr>
+                        <td>
+                            <div style="font-weight: 800; font-size: 0.98rem;">${op.name}</div>
+                            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">
+                                NIP: ${op.nip}
+                            </div>
+                        </td>
+                        <td><span class="badge ${getBadgeClass(kode)}">${kode}</span></td>
+                    </tr>
+                `;
+            }).join('');
+
+            selectedDateKey = `agenda_${year}_${month}_${day}`;
+            document.getElementById("agenda-input").value = localStorage.getItem(selectedDateKey) || "";
+
+            document.getElementById("schedule-modal").classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById("schedule-modal").classList.remove('show');
+        }
+
+        function saveAgenda() {
+            const agendaText = document.getElementById("agenda-input").value;
+            if (agendaText.trim() === "") {
+                localStorage.removeItem(selectedDateKey);
+            } else {
+                localStorage.setItem(selectedDateKey, agendaText);
+            }
+            renderCalendar();
+            closeModal();
+        }
+
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById("schedule-modal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Inisialisasi awal
+        renderTodayRoster();
+        renderCalendar();
+    </script>
+</body>
+</html>
